@@ -1,0 +1,29 @@
+{
+  "name": "achizitii-publice",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0",
+    "vuex": "^4.1.0",
+    "vue-select": "^4.0.0-beta.6",
+    "vuedraggable": "^4.1.0",
+    "jspdf": "^2.5.1",
+    "flatpickr": "^4.6.13",
+    "vue-advanced-cropper": "^2.8.8"
+  },
+  "overrides": {
+    "vue-select": {
+      "vue": "^3.4.0"
+    }
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}
