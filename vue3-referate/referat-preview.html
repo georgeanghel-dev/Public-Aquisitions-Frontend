@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referat de Necesitate — ConectX</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #c8c8c8;
+    font-family: 'Open Sans', Arial, sans-serif;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    font-size: 9pt;
+    color: #222;
+  }
+
+  .toolbar {
+    width: 210mm;
+    max-width: 100%;
+    background: #2c3e50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-radius: 6px 6px 0 0;
+    font-size: 0.78rem;
+  }
+  .toolbar-title { font-weight: 600; opacity: 0.9; }
+  .toolbar-actions { display: flex; gap: 0.5rem; }
+  .toolbar-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toolbar-btn:hover { background: rgba(255,255,255,0.25); }
+
+  .page {
+    width: 210mm;
+    max-width: 100%;
+    background: white;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.28);
+    color: #222;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8mm 10mm 5mm;
+    border-bottom: 2px solid #e0e8f0;
+  }
+
+  .header-logo {
+    width: 22mm;
+    height: 22mm;
+    flex-shrink: 0;
+  }
+  .header-logo svg { width: 100%; height: 100%; }
+
+  .header-inst {
+    text-align: right;
+    flex: 1;
+    padding-left: 5mm;
+  }
+  .inst-name-main {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1.25;
+    margin-bottom: 2mm;
+  }
+  .inst-contact {
+    font-size: 8pt;
+    color: #444;
+    line-height: 1.8;
+  }
+  .inst-contact strong { color: #222; }
+
+  .header-wave {
+    width: 100%;
+    height: 14px;
+    background: linear-gradient(135deg, #e8f2fc 0%, #f5f9ff 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .header-wave::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: -10%;
+    width: 120%; height: 28px;
+    background: white;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  }
+
+  .page-body { padding: 6mm 10mm 5mm; }
+
+  /* Pastilă titlu secțiune */
+  .sec-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #1976d2;
+    color: white;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin-bottom: 3mm;
+  }
+
+  /* Titlu secțiune text albastru */
+  .sec-title-blue {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #1976d2;
+    margin-bottom: 2.5mm;
+    margin-top: 4mm;
+  }
+
+  /* Card info */
+  .info-card {
+    border: 1px solid #c8d8e8;
+    border-radius: 4px;
+    padding: 4mm 5mm;
+    margin-bottom: 4mm;
+  }
+  .info-referat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5mm 4mm;
+    font-size: 8.5pt;
+  }
+  .info-referat-grid .full { grid-column: 1 / -1; }
+  .info-row { display: flex; gap: 1.5mm; align-items: baseline; line-height: 1.6; }
+  .info-key { font-style: italic; color: #333; white-space: nowrap; }
+  .info-key::after { content: ':'; margin-right: 1mm; }
+  .info-val { color: #111; }
+
+  /* ── PRODUSE — casete verticale ── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3mm;
+    margin-top: 3mm;
+    margin-bottom: 4mm;
+  }
+
+  .product-card {
+    border: 1px solid #c8d8e8;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  /* Produs rămas singur pe rând → full width */
+  .product-card.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .product-card-header {
+    background: #1976d2;
+    color: white;
+    font-weight: 700;
+    font-size: 8.5pt;
+    padding: 2mm 4mm;
+  }
+  .product-card-body { padding: 2mm 4mm; }
+  .product-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1.2mm 0;
+    border-bottom: 0.5px solid #eef2f7;
+    font-size: 8pt;
+    gap: 2mm;
+  }
+  .product-field:last-child { border-bottom: none; }
+  .product-field-label { font-style: italic; color: #444; flex-shrink: 0; }
+  .product-field-value { font-weight: 600; color: #111; text-align: right; }
+
+  /* Destinație + tip contract */
+  .dest-contract-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm;
+    margin-bottom: 4mm;
+  }
+  .check-group-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #1976d2;
+    margin-bottom: 2mm;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    font-size: 8.5pt;
+    color: #222;
+    margin-bottom: 1.5mm;
+    line-height: 1.4;
+  }
+  .check-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8pt;
+    font-weight: 700;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .check-icon.x { background: #1976d2; color: white; }
+  .check-icon.v { background: transparent; border: 1.5px solid #2e7d32; color: #2e7d32; }
+
+  /* PAAP + Buget */
+  .paap-buget-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm;
+    margin-bottom: 4mm;
+  }
+  .paap-value { font-size: 8.5pt; color: #222; margin-top: 1mm; line-height: 1.5; }
+  .buget-label { font-size: 8pt; font-weight: 700; color: #1976d2; margin-top: 1.5mm; }
+  .buget-value { font-size: 8.5pt; color: #222; margin-top: 0.5mm; line-height: 1.5; }
+  .buget-functional-bar { border-left: 3px solid #1976d2; padding-left: 3mm; margin-top: 2mm; }
+
+  /* Secțiuni text */
+  .text-section { margin-bottom: 3mm; }
+  .text-sub-label { font-size: 8.5pt; font-weight: 700; color: #333; margin-bottom: 0.5mm; }
+  .text-value { font-size: 8.5pt; color: #222; line-height: 1.55; }
+  .text-value .item-num { font-weight: 700; margin-right: 1mm; }
+
+  /* Tabel CPV */
+  .cpv-badge {
+    display: inline-block;
+    background: #ccc;
+    color: #333;
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-bottom: 2mm;
+  }
+  .cpv-table { width: 100%; border-collapse: collapse; font-size: 8pt; margin-bottom: 3mm; }
+  .cpv-table th { font-weight: 700; color: #222; padding: 1.5mm 2mm; border-bottom: 1.5px solid #ddd; text-align: left; }
+  .cpv-table td { padding: 1.5mm 2mm; font-size: 8.5pt; color: #111; }
+  .cpv-table td.cpv-cell { border: 1px solid #c8d8e8; border-radius: 3px; background: #f4f8fc; font-style: italic; }
+
+  /* Stadiu rezultate */
+  .stadiu-check { display: flex; align-items: center; gap: 2mm; font-size: 12pt; font-weight: 700; color: #222; margin: 1mm 0 3mm; }
+  .stadiu-icon { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #2e7d32; color: #2e7d32; display: inline-flex; align-items: center; justify-content: center; font-size: 10pt; font-weight: 700; }
+
+  /* Tabel cantitate */
+  .cant-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; border: 1px solid #c8d8e8; border-radius: 4px; overflow: hidden; margin-bottom: 3mm; }
+  .cant-table th { padding: 1.5mm 3mm; background: #f0f6fc; font-size: 8pt; font-style: italic; font-weight: 400; color: #333; text-align: left; border-bottom: 1px solid #c8d8e8; }
+  .cant-table td { padding: 2mm 3mm; }
+
+  /* Valori lista */
+  .values-list { border: 1px solid #c8d8e8; border-radius: 4px; margin-bottom: 3mm; overflow: hidden; }
+  .values-row { display: flex; justify-content: space-between; align-items: center; padding: 1.5mm 4mm; border-bottom: 0.5px solid #eef2f7; font-size: 8.5pt; font-style: italic; gap: 4mm; }
+  .values-row:last-child { border-bottom: none; }
+  .values-row .v-val { font-style: normal; font-weight: 600; }
+
+  .total-row-outside { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5mm; font-size: 8.5pt; font-weight: 700; color: #111; margin-bottom: 4mm; }
+
+  /* Descriere produse badge-uri gri */
+  .desc-badge { display: inline-block; background: #888; color: white; font-size: 7.5pt; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-bottom: 2mm; }
+  .desc-item { font-size: 8.5pt; color: #222; margin-bottom: 1mm; line-height: 1.5; }
+
+  /* Calendar */
+  .calendar-value { font-size: 9pt; color: #222; margin-top: 1mm; font-weight: 600; }
+
+  /* Footer */
+  .page-footer {
+    margin-top: 6mm;
+    padding: 5mm 10mm 6mm;
+    background: linear-gradient(135deg, #e8f2fc 0%, #f0f8ff 100%);
+    text-align: center;
+    font-size: 8.5pt;
+    color: #333;
+    border-top: 1px solid #c8d8e8;
+  }
+  .footer-brand { font-size: 13pt; font-weight: 900; letter-spacing: -0.03em; color: #1a1a2e; margin-top: 1mm; }
+  .footer-brand span { color: #1976d2; }
+  .footer-url { font-size: 7.5pt; color: #888; margin-top: 0.5mm; }
+
+  /* Page break vizual */
+  .page-break { width: 210mm; max-width: 100%; height: 8px; background: #b0b0b0; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .toolbar { display: none; }
+    .page { box-shadow: none; }
+    .page-break { height: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="toolbar-title">📄 Referat de Necesitate — Achiziție oțet pentru bucătărie</span>
+  <div class="toolbar-actions">
+    <button class="toolbar-btn" onclick="window.print()">🖨 Tipărește</button>
+  </div>
+</div>
+
+<!-- ═══════════ PAGINA 1 ═══════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="header-logo">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#003399" stroke="#c8d8e8" stroke-width="2"/>
+        <circle cx="50" cy="50" r="38" fill="#f0f0f0"/>
+        <rect x="20" y="38" width="60" height="8" fill="#002b7f"/>
+        <rect x="20" y="46" width="60" height="8" fill="#fcd116"/>
+        <rect x="20" y="54" width="60" height="8" fill="#ce1126"/>
+        <text x="50" y="37" text-anchor="middle" font-size="18" fill="#002b7f">⚖</text>
+        <circle cx="50" cy="50" r="38" fill="none" stroke="#8899bb" stroke-width="1"/>
+        <text x="50" y="86" text-anchor="middle" font-size="5.5" fill="white" font-weight="700" letter-spacing="0.5">GUVERNUL ROMÂNIEI</text>
+      </svg>
+    </div>
+    <div class="header-inst">
+      <div class="inst-name-main">Oficiul Central Stocare pentru Situații Speciale<br>București</div>
+      <div class="inst-contact">
+        <strong>Adresa:</strong> Municipiul București, Sector 1, Bulevardul Maresal Alexandru Averescu nr. 3<br>
+        <strong>Tel:</strong> 021 319 3196 &nbsp;&nbsp; <strong>Email:</strong> office@ocsssb.ro
+      </div>
+    </div>
+  </div>
+  <div class="header-wave"></div>
+
+  <div class="page-body">
+
+    <!-- Informații Referat -->
+    <div class="sec-badge">Informații Referat</div>
+    <div class="info-card">
+      <div class="info-referat-grid">
+        <div class="info-row full">
+          <span class="info-key">Denumirea referat</span>
+          <span class="info-val">Achizitie oțet pentru bucătărie</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Instituția</span>
+          <span class="info-val">Oficiul Central Stocare pentru Situații Speciale București</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Utilizatorul</span>
+          <span class="info-val">Adrian Aldea</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Departamentul</span>
+          <span class="info-val">Informatică</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Data creării</span>
+          <span class="info-val">13.05.2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Descrierea produselor -->
+    <div class="sec-badge">Descrierea produselor</div>
+
+    <!--
+      LOGICĂ GRID PRODUSE:
+      - 2 produse pe rând
+      - dacă un produs rămâne singur pe rând → full-width (class="full-width")
+      - 1 produs total → full-width
+    -->
+    <div class="products-grid">
+      <!-- Produs 1 — singurul, deci full-width -->
+      <div class="product-card full-width">
+        <div class="product-card-header">Oțet</div>
+        <div class="product-card-body">
+          <div class="product-field">
+            <span class="product-field-label">Nume, prenume solicitant / Id ConectX</span>
+            <span class="product-field-value">Aldea Adrian / 13</span>
+          </div>
+          <div class="product-field">
+            <span class="product-field-label">Data și ora creării</span>
+            <span class="product-field-value">30.04.2026 13:15</span>
+          </div>
+          <div class="product-field">
+            <span class="product-field-label">Codul CPV</span>
+            <span class="product-field-value">15871110-8</span>
+          </div>
+          <div class="product-field">
+            <span class="product-field-label">Unitatea de măsură</span>
+            <span class="product-field-value">l</span>
+          </div>
+          <div class="product-field">
+            <span class="product-field-label">Cantitatea</span>
+            <span class="product-field-value">54,00</span>
+          </div>
+          <div class="product-field">
+            <span class="product-field-label">Valoarea unitară, fără TVA</span>
+            <span class="product-field-value">178,00</span>
+          </div>
+          <div class="product-field">
+            <span class="product-field-label">Valoarea estimată bucată, cu TVA</span>
+            <span class="product-field-value">215,38</span>
+          </div>
+          <div class="product-field">
+            <span class="product-field-label">Valoarea estimată totală, fără TVA</span>
+            <span class="product-field-value">9.612,00</span>
+          </div>
+          <div class="product-field">
+            <span class="product-field-label">Valoarea estimată totală, cu TVA</span>
+            <span class="product-field-value">11.630,52</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destinație achiziție + Tip contract -->
+    <div class="dest-contract-grid">
+      <div>
+        <div class="check-group-title">Destinația achiziției</div>
+        <div class="check-item">
+          <span class="check-icon x">✕</span>
+          Realizarea unui interes public
+        </div>
+        <div class="check-item">
+          <span class="check-icon v">✓</span>
+          Asigurarea functionarii autoritatii contractante
+        </div>
+      </div>
+      <div>
+        <div class="check-group-title">Tipul contractului</div>
+        <div class="check-item">
+          <span class="check-icon x">✕</span>
+          Contract
+        </div>
+        <div class="check-item">
+          <span class="check-icon v">✓</span>
+          Factură
+        </div>
+        <div class="check-item">
+          <span class="check-icon x">✕</span>
+          Acord-Cadru
+        </div>
+      </div>
+    </div>
+
+    <!-- Centralizare PAAP + Clasificație bugetară -->
+    <div class="paap-buget-grid">
+      <div>
+        <div class="check-group-title">Modalitatea de centralizare în PAAP</div>
+        <div class="paap-value">Clasă - 15870000-7 - Condimente și mirodenii</div>
+      </div>
+      <div>
+        <div class="check-group-title">Clasificație bugetară</div>
+        <div class="buget-label">Economică</div>
+        <div class="buget-value">10.01.08 - Fond de premii</div>
+        <div class="buget-label">Funcțională</div>
+        <div class="buget-functional-bar">
+          <div class="buget-value">51.03 - Contribuția la bugetul U E</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div><strong>Referatul de necesitate a fost generat in platforma ConectX.</strong></div>
+    <div class="footer-brand">conect<span>x</span></div>
+    <div class="footer-url">www.conectx.net</div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════ PAGINA 2 ═══════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="header-logo">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#003399" stroke="#c8d8e8" stroke-width="2"/>
+        <circle cx="50" cy="50" r="38" fill="#f0f0f0"/>
+        <rect x="20" y="38" width="60" height="8" fill="#002b7f"/>
+        <rect x="20" y="46" width="60" height="8" fill="#fcd116"/>
+        <rect x="20" y="54" width="60" height="8" fill="#ce1126"/>
+        <text x="50" y="37" text-anchor="middle" font-size="18" fill="#002b7f">⚖</text>
+        <circle cx="50" cy="50" r="38" fill="none" stroke="#8899bb" stroke-width="1"/>
+        <text x="50" y="86" text-anchor="middle" font-size="5.5" fill="white" font-weight="700" letter-spacing="0.5">GUVERNUL ROMÂNIEI</text>
+      </svg>
+    </div>
+    <div class="header-inst">
+      <div class="inst-name-main">Oficiul Central Stocare pentru Situații Speciale<br>București</div>
+      <div class="inst-contact">
+        <strong>Adresa:</strong> Municipiul București, Sector 1, Bulevardul Maresal Alexandru Averescu nr. 3<br>
+        <strong>Tel:</strong> 021 319 3196 &nbsp;&nbsp; <strong>Email:</strong> office@ocsssb.ro
+      </div>
+    </div>
+  </div>
+  <div class="header-wave"></div>
+
+  <div class="page-body">
+
+    <!-- Fundamentare -->
+    <div class="sec-badge">Fundamentare</div>
+    <div class="text-section" style="margin-top:2mm; margin-bottom:5mm;">
+      <div class="text-value">diverse</div>
+    </div>
+
+    <!-- Contribuția achiziției -->
+    <div class="sec-title-blue">Contribuția achiziției la îndeplinirea obiectivelor</div>
+
+    <div class="text-section">
+      <div class="text-sub-label">Necesitatea identificată</div>
+      <div class="text-value">Achizitie oțet pentru bucătărie</div>
+    </div>
+
+    <div class="text-section">
+      <div class="text-sub-label">Obiectivele autorității contractante</div>
+      <div class="text-value"><span class="item-num">1.</span> Buna funcționare a instituției.</div>
+    </div>
+
+    <!-- Obiectivele proiectului și Obiectivele din strategie — ELIMINATE per cerință -->
+
+    <div class="text-section">
+      <div class="text-sub-label">Beneficiile obținute</div>
+      <div class="text-value"><span class="item-num">1.</span> Nu este cazul</div>
+    </div>
+
+    <!-- Justificarea modalității -->
+    <div class="sec-title-blue">Justificarea modalității</div>
+    <div class="text-section" style="margin-bottom:5mm;">
+      <div class="text-value">dasda</div>
+    </div>
+
+    <!-- Nevoia în contextul legislației -->
+    <div class="sec-title-blue">Nevoia în contextul legislației</div>
+
+    <div style="margin-bottom:2mm;">
+      <span class="cpv-badge">Cod CPV pentru descrierea obiectului contractului</span>
+    </div>
+
+    <table class="cpv-table">
+      <thead>
+        <tr>
+          <th>Cod CPV principal</th>
+          <th>Categorie achiziție</th>
+          <th>Cantitate</th>
+          <th>Unitate de măsură</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cpv-cell">15871110-8</td>
+          <td class="cpv-cell">Produse</td>
+          <td class="cpv-cell">54,00</td>
+          <td class="cpv-cell">l</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Stadiul rezultatelor -->
+    <div class="sec-title-blue">Stadiul rezultatelor</div>
+
+    <div class="text-sub-label" style="margin-bottom:1mm;">Categorie achiziție</div>
+    <div class="stadiu-check">
+      <span class="stadiu-icon">✓</span>
+      Produse
+    </div>
+
+    <div style="margin-bottom:2mm;">
+      <span class="cpv-badge">Cantitatea și unitatea de măsură corespunzătoare</span>
+    </div>
+
+    <table class="cant-table">
+      <thead>
+        <tr><th style="display:flex; justify-content:space-between;"><span>Cantitate</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="display:flex; justify-content:space-between;">
+            <span style="font-style:italic; color:#444;">Cantitate</span>
+            <span style="font-weight:600;">54,00</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="page-footer">
+    <div><strong>Referatul de necesitate a fost generat in platforma ConectX.</strong></div>
+    <div class="footer-brand">conect<span>x</span></div>
+    <div class="footer-url">www.conectx.net</div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════ PAGINA 3 ═══════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="header-logo">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#003399" stroke="#c8d8e8" stroke-width="2"/>
+        <circle cx="50" cy="50" r="38" fill="#f0f0f0"/>
+        <rect x="20" y="38" width="60" height="8" fill="#002b7f"/>
+        <rect x="20" y="46" width="60" height="8" fill="#fcd116"/>
+        <rect x="20" y="54" width="60" height="8" fill="#ce1126"/>
+        <text x="50" y="37" text-anchor="middle" font-size="18" fill="#002b7f">⚖</text>
+        <circle cx="50" cy="50" r="38" fill="none" stroke="#8899bb" stroke-width="1"/>
+        <text x="50" y="86" text-anchor="middle" font-size="5.5" fill="white" font-weight="700" letter-spacing="0.5">GUVERNUL ROMÂNIEI</text>
+      </svg>
+    </div>
+    <div class="header-inst">
+      <div class="inst-name-main">Oficiul Central Stocare pentru Situații Speciale<br>București</div>
+      <div class="inst-contact">
+        <strong>Adresa:</strong> Municipiul București, Sector 1, Bulevardul Maresal Alexandru Averescu nr. 3<br>
+        <strong>Tel:</strong> 021 319 3196 &nbsp;&nbsp; <strong>Email:</strong> office@ocsssb.ro
+      </div>
+    </div>
+  </div>
+  <div class="header-wave"></div>
+
+  <div class="page-body">
+
+    <!-- Lista valori (continuare produs) -->
+    <div class="values-list">
+      <div class="values-row">
+        <span>Unitate de măsură</span>
+        <span class="v-val">l</span>
+      </div>
+      <div class="values-row">
+        <span>Valoarea unitară, fără TVA</span>
+        <span class="v-val">178,00</span>
+      </div>
+      <div class="values-row">
+        <span>Valoarea unitară, cu TVA</span>
+        <span class="v-val">215,38</span>
+      </div>
+      <div class="values-row">
+        <span>Valoarea estimată totală, fără TVA</span>
+        <span class="v-val">9.612,00</span>
+      </div>
+      <div class="values-row">
+        <span>Valoarea estimată totală, cu TVA</span>
+        <span class="v-val">11.630,52</span>
+      </div>
+    </div>
+
+    <div class="total-row-outside">
+      <span>Total, fără TVA: <strong>9.612,00</strong></span>
+      <span>Total, cu TVA: <strong>11.630,52</strong></span>
+    </div>
+
+    <!-- Descriere produse -->
+    <div style="margin-bottom:2mm;">
+      <span class="desc-badge">Descriere produse</span>
+    </div>
+    <div class="desc-item"><strong>1. Nume nevoie: <em>Oțet</em></strong></div>
+    <div class="desc-item" style="margin-left:3mm; margin-bottom:4mm; color:#666;">Fără descriere</div>
+
+    <!-- Descrierea rezultatului -->
+    <div style="margin-bottom:2mm;">
+      <span class="desc-badge">Descrierea rezultatului urmărit la finalul contractului</span>
+    </div>
+    <div class="desc-item" style="margin-bottom:5mm;"><strong>1.</strong> completare stoc</div>
+
+    <!-- Calendarul achizițiilor -->
+    <div class="sec-title-blue">Calendarul achizitiilor</div>
+    <div class="text-sub-label" style="margin-top:2mm;">Data estimată a achiziției</div>
+    <div class="calendar-value">15-05-2026</div>
+
+  </div>
+
+  <div class="page-footer">
+    <div><strong>Referatul de necesitate a fost generat in platforma ConectX.</strong></div>
+    <div class="footer-brand">conect<span>x</span></div>
+    <div class="footer-url">www.conectx.net</div>
+  </div>
+</div>
+
+</body>
+</html>
